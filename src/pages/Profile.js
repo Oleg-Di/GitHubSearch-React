@@ -6,6 +6,7 @@ import { GithubContext } from "./../context/GitHub/githubContext";
 
 export const Profile = () => {
   const { name } = useParams();
+  console.log(name);
   const github = useContext(GithubContext);
   useEffect(() => {
     github.getUser(name);
