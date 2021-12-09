@@ -3,7 +3,7 @@ import { Input } from "../UI/input";
 import { AuthContext } from "./../context/authForm/authContext";
 
 export const Auth = () => {
-  const {registerHandler, loginHandler, formControls, onChangeHandler, isFormValid, submitHandler } =
+  const {authError,registerHandler, loginHandler, formControls, onChangeHandler, isFormValid, submitHandler } =
     useContext(AuthContext);
 
   return (
@@ -30,6 +30,8 @@ export const Auth = () => {
               />
             );
           })}
+          {authError?<p className="text-center" style={{color: 'red'}}>Incorrect email or password</p>: null}
+          
           <button
             onClick={loginHandler}
             disabled={!isFormValid}

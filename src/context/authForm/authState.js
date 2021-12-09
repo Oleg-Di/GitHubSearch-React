@@ -3,6 +3,7 @@ import { authReducer } from "./authFormReducer";
 import { AuthContext } from "./authContext";
 import { AUTH_DATA, AUTH_LOGOUT, AUTH_SUCCESS } from "../types";
 import axios from "axios";
+import { AUTH_ERROR } from './../types';
 
 function validateEmail(email) {
   const re =
@@ -13,8 +14,8 @@ const apiKey = "AIzaSyCDDCjNhxisXL9q8gyNPiQbCwqLceVpaKM";
 
 export const AuthState = ({ children }) => {
   const initialState = {
+    authError: false,
     token: null,
-    isAuth: false,
     isFormValid: true,
     formControls: {
       email: {
@@ -68,6 +69,7 @@ export const AuthState = ({ children }) => {
     }
   };
   const authSuccess = (token) => {
+    console.log(state.token);
    return  dispatch({
       type: AUTH_SUCCESS,
       payload: token
@@ -77,10 +79,10 @@ export const AuthState = ({ children }) => {
     localStorage.removeItem('token')
     localStorage.removeItem('userId')
     localStorage.removeItem('expirationDate')
-    
-    return {
+    console.log(localStorage, state);
+    return dispatch({
         type: AUTH_LOGOUT
-    }
+    })
   }
   const loginHandler = async () => {
     let formData = {
@@ -100,7 +102,10 @@ export const AuthState = ({ children }) => {
       localStorage.setItem('expirationDate', expirationDate)
       authSuccess(data.idToken)
     } catch (error) {
-      console.log(error);
+      return dispatch({
+        type: AUTH_ERROR
+      })
+
     }
     
   };
@@ -141,10 +146,11 @@ export const AuthState = ({ children }) => {
     });
   };
   const { email, password } = state.formControls;
-  const { isFormValid, formControls, token } = state;
+  const { isFormValid, formControls, token, authError } = state;
   return (
     <AuthContext.Provider
       value={{
+        authError,
         logout,
         registerHandler,
         loginHandler,

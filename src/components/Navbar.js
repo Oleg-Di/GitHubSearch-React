@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { AuthContext } from "../context/authForm/authContext"
 
 
@@ -19,7 +19,9 @@ const {token, logout} = useContext(AuthContext)
                     <NavLink to='/about' className='nav-link'>Information</NavLink>
                 </li>
             </ul>
-            {token?<button onClick={logout} className='btn btn-secondary'>Log out</button>:null}
+            {/* <Link to='/' onClick={logout} className='btn btn-secondary'>Log out</Link> */}
+            {token? <Link to='/' onClick={logout} className='btn btn-secondary'>Log out</Link>:null}
+            {/* {token?<button onClick={logout} className='btn btn-secondary'>Log out</button>:null} */}
         </nav>
     )
 }
